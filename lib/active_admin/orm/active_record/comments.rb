@@ -18,9 +18,9 @@ ActiveAdmin.autoload :Comment, 'active_admin/orm/active_record/comments/comment'
 
 # Walk through all the loaded namespaces after they're loaded
 ActiveAdmin.after_load do |app|
-  app.namespaces.values.each do |namespace|
+  app.namespaces.each do |namespace|
     namespace.register ActiveAdmin::Comment, as: namespace.comments_registration_name do
-      actions :index, :show, :create
+      actions :index, :show, :create, :destroy
 
       menu false unless namespace.comments && namespace.show_comments_in_menu
 
@@ -30,7 +30,7 @@ ActiveAdmin.after_load do |app|
       scope :all, show_count: false
       # Register a scope for every namespace that exists.
       # The current namespace will be the default scope.
-      app.namespaces.values.map(&:name).each do |name|
+      app.namespaces.map(&:name).each do |name|
         scope name, default: namespace.name == name do |scope|
           scope.where namespace: name.to_s
         end
@@ -60,6 +60,13 @@ ActiveAdmin.after_load do |app|
               redirect_to :back
             end
           end
+
+          def destroy
+            destroy! do |success, failure|
+              success.html { redirect_to :back }
+              failure.html { redirect_to :back }
+            end
+          end
         end
       end
 
@@ -74,6 +81,7 @@ ActiveAdmin.after_load do |app|
         column I18n.t('active_admin.comments.resource'),      :resource
         column I18n.t('active_admin.comments.author'),        :author
         column I18n.t('active_admin.comments.body'),          :body
+        column I18n.t('active_admin.comments.created_at'),    :created_at
         actions
       end
     end

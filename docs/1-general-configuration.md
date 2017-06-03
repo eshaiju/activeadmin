@@ -37,6 +37,7 @@ config.site_title       = "My Admin Site"
 config.site_title_link  = "/"
 config.site_title_image = "site_image.png"
 config.site_title_image = "http://www.google.com/images/logos/google_logo_41.png"
+config.site_title_image = ->(context) { context.current_user.company.logo_url }
 ```
 
 ## Internationalization (I18n)
@@ -46,6 +47,15 @@ To translate Active Admin to a new language or customize an existing translation
 to your application's `config/locales` folder and update it. We welcome new/updated translations,
 so feel free to [contribute](https://github.com/activeadmin/activeadmin/blob/master/CONTRIBUTING.md)!
 To translate third party gems like devise, use for example devise-i18n.
+
+## Localize Format For Dates and Times
+
+Active Admin sets `:long` as default localize format for dates and times.
+If you want, you can customize it.
+
+```ruby
+config.localize_format = :short
+```
 
 ## Namespaces
 

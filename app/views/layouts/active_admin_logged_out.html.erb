@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 
@@ -13,6 +13,10 @@
   <% end %>
 
   <%= favicon_link_tag ActiveAdmin.application.favicon if ActiveAdmin.application.favicon %>
+
+  <% ActiveAdmin.application.meta_tags_for_logged_out_pages.each do |name, content| %>
+    <%= tag(:meta, name: name, content: content) %>
+  <% end %>
 
   <%= csrf_meta_tag %>
 </head>

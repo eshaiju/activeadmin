@@ -5,6 +5,7 @@ module ActiveAdmin
 
         def build(*args)
           super
+          set_attribute :lang, I18n.locale
           add_classes_to_body
           build_active_admin_head
           build_page
@@ -33,6 +34,10 @@ module ActiveAdmin
 
             if active_admin_namespace.favicon
               text_node(favicon_link_tag(active_admin_namespace.favicon))
+            end
+
+            active_admin_namespace.meta_tags.each do |name, content|
+              text_node(tag(:meta, name: name, content: content))
             end
 
             text_node csrf_meta_tag
